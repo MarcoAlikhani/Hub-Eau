@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 authors = [
-    { name = "marco-alikhani", email = "mohammad.alikhani2000@gmail.com" }
+    { name = "marco-alikhani", email = "marco.alikhani@gmail.com" }
 ]
 requires-python = ">=3.12"
 dependencies = [
@@ -32,7 +32,6 @@ dev = [
     "freezegun>=1.5.5",
     "mypy>=2.3.0",
     "pandas-stubs>=3.0.5.260730",
-    "poethepoet>=0.48.0",
     "pytest>=9.1.1",
     "pytest-cov>=7.1.0",
     "responses>=0.26.2",
@@ -127,3 +126,18 @@ exclude_lines = [
     "if __name__ == .__main__.:",    # The entry guard needs no test
     "if TYPE_CHECKING:",             # Import-only block, never runs
 ]
+
+# =============================================================================
+# POE — task runner (run with: uv run poe <task>)
+# =============================================================================
+[tool.poe.tasks]
+lint      = "ruff check ."                    # Find problems
+format    = "ruff format ."                   # Fix formatting in place
+fmt-check  = "ruff format --check ."          # Verify formatting; CI uses this
+typecheck = "mypy"                            # Static type check src/
+test      = "pytest"                          # Run the suite with coverage
+run       = "flood-etl"                       # Invoke the pipeline entry point
+
+# The gate. Runs everything CI runs, in the same order, locally.
+# Catch failures on your machine in 10 seconds, not on a PR in 3 minutes.
+check = ["lint", "fmt-check", "typecheck", "test"]
