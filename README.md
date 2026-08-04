@@ -1,10 +1,6 @@
-# Project Plan — Production-Grade ETL Pipeline (`flood-etl`)
+# Hub'Eau
 
-**Author:** Mohammad Alikhani Najafabadi
-**Status:** Planning complete — execution starting at Phase 0
-**Target repo:** `flood-etl`
-**Python:** 3.12
-
+**Author:** Marco Alikhani
 ---
 
 ## 1. What This Project Is
@@ -16,28 +12,10 @@ them, and publishes a versioned analytics-ready dataset.
 The pipeline runs weekly with no human in the loop. That constraint — *nobody is
 watching when it fails* — is what drives every design decision in this document.
 
-### Why this project exists in the portfolio
-
-The other three projects (Fraud Detection, Rossmann, Grid Resilience) are all
-**ML-centric**. This one deliberately contains **zero model training**. It is a
-pure data-engineering artefact demonstrating:
-
-- Ingestion from an unreliable external source
-- Idempotent, incremental processing
-- Clean layered architecture with swappable I/O
-- Test coverage that proves the correctness claims rather than asserting them
-- Scheduled execution with observability
-
----
 
 ## 2. Provenance and Differentiation
 
-This project takes its **domain and its core patterns** from the freeCodeCamp
-article *"The ETL Pipeline Handbook: How to Build a Production-Grade Pipeline in
-Python"* by brooklyn (July 2026). That article is credited in the README.
-
-The article stops at a Jupyter notebook. This repository builds the layer the
-article deliberately skips.
+This project takes its patterns from the freeCodeCamp article "The ETL Pipeline Handbook: How to Build a Production-Grade Pipeline in Python" by brooklyn (July 2026).  The article stops at a Jupyter notebook. This repository builds the layer the article deliberately skips.
 
 | The article does | This repo does |
 | --- | --- |
@@ -49,10 +27,6 @@ article deliberately skips.
 | Manual `python script.py` | GitHub Actions: CI on PR + weekly cron |
 | No tests | `pytest` suite with mocked HTTP and a frozen clock |
 | Kaggle CLI hardcoded into Load | `Writer` Protocol with two implementations (local, S3) |
-
-**Honesty rule for the README and CV:** the article is named as the starting
-point. Nothing in the write-up claims originality for the ETL pattern itself —
-the claim is about the engineering layer built on top of it.
 
 ---
 
@@ -400,14 +374,3 @@ The project is complete when all of the following hold:
 - [ ] README explains the architecture, credits the source article, and states
       what was added on top of it
 - [ ] Every CV bullet is defensible against the actual repo contents
-
----
-
-## 9. Working Agreement
-
-- Mohammad writes all code. Claude coaches, reviews, and unblocks.
-- One piece at a time, with a verification step after each piece.
-- Google-style docstrings; comments explain **why**, not what.
-- Phase reports delivered as downloadable `.md` files, committed to `docs/`.
-- Claims in the README and on the CV must match the repo exactly. No
-  unverifiable metrics, no buzz-verb stacking.
