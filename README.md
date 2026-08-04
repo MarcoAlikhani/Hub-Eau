@@ -1,6 +1,4 @@
 # Hub'Eau
-
-**Author:** Marco Alikhani
 ---
 
 ## 1. What This Project Is
