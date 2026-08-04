@@ -1,0 +1,129 @@
+[project]
+name = "flood-etl"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "marco-alikhani", email = "mohammad.alikhani2000@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "pandas>=3.0.5",
+    "pyarrow>=25.0.0",
+    "pydantic-settings>=2.14.2",
+    "requests>=2.34.2",
+    "structlog>=26.1.0",
+]
+
+[project.scripts]
+flood-etl = "flood_etl:main"
+
+[project.optional-dependencies]
+s3 = [
+    "boto3>=1.43.63",
+]
+
+[build-system]
+requires = ["uv_build>=0.11.19,<0.12.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "freezegun>=1.5.5",
+    "mypy>=2.3.0",
+    "pandas-stubs>=3.0.5.260730",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "responses>=0.26.2",
+    "ruff>=0.16.1",
+    "types-requests>=2.33.0.20260712",
+]
+
+
+
+# =============================================================================
+# ENTRY POINT
+# =============================================================================
+# Creates a `flood-etl` command that calls main() in src/flood_etl/cli.py.
+# Lets us run `uv run flood-etl` instead of `uv run python -m flood_etl.cli`.
+[project.scripts]
+flood-etl = "flood_etl.cli:main"
+
+
+# =============================================================================
+# RUFF — linting and formatting
+# =============================================================================
+[tool.ruff]
+line-length = 100          # 88 (black default) is cramped for pandas chains
+target-version = "py312"   # Lets ruff suggest 3.12-era syntax
+src = ["src", "tests"]     # Tells ruff which dirs are first-party, for import sorting
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes — unused imports, undefined names
+    "I",    # isort — enforces stdlib / third-party / local import grouping
+    "N",    # pep8-naming
+    "UP",   # pyupgrade — flags outdated syntax for our Python version
+    "B",    # flake8-bugbear — catches the MUTABLE DEFAULT ARGUMENT trap
+    "A",    # flake8-builtins — stops you naming a variable `list` or `id`
+    "C4",   # flake8-comprehensions
+    "SIM",  # flake8-simplify
+    "PTH",  # flake8-use-pathlib — prefer Path over os.path
+    "RET",  # flake8-return — consistent return statements
+    "ARG",  # flake8-unused-arguments
+    "PD",   # pandas-vet — pandas-specific anti-patterns
+    "RUF",  # ruff's own rules
+]
+ignore = [
+    "PD901",  # allows the name `df` — it's the universal convention here
+]
+
+# Tests get a looser ruleset: assert-heavy, argument-heavy fixtures are normal
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["ARG", "PD"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+
+# =============================================================================
+# MYPY — static type checking
+# =============================================================================
+[tool.mypy]
+python_version = "3.12"
+strict = true                       # Turns on the full strict-mode bundle
+warn_unreachable = true             # Flags code that can never execute
+show_error_codes = true             # Prints the rule name so you can look it up
+files = ["src"]                     # Strict checking applies to src/ only
+
+# Tests are exempt from strict mode. Fixtures and monkeypatching fight
+# strict typing constantly, and the payoff there is low.
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+
+
+# =============================================================================
+# PYTEST
+# =============================================================================
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+    "-q",                            # Quiet — less noise per run
+    "--strict-markers",              # Typo'd @pytest.mark names become errors
+    "--cov=flood_etl",               # Measure coverage on our package
+    "--cov-report=term-missing",     # Print which LINE NUMBERS aren't covered
+]
+
+
+# =============================================================================
+# COVERAGE
+# =============================================================================
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",    # The entry guard needs no test
+    "if TYPE_CHECKING:",             # Import-only block, never runs
+]
