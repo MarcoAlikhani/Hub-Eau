@@ -32,6 +32,7 @@ dev = [
     "freezegun>=1.5.5",
     "mypy>=2.3.0",
     "pandas-stubs>=3.0.5.260730",
+    "poethepoet>=0.48.0",
     "pytest>=9.1.1",
     "pytest-cov>=7.1.0",
     "responses>=0.26.2",
@@ -46,8 +47,7 @@ dev = [
 # =============================================================================
 # Creates a `flood-etl` command that calls main() in src/flood_etl/cli.py.
 # Lets us run `uv run flood-etl` instead of `uv run python -m flood_etl.cli`.
-[project.scripts]
-flood-etl = "flood_etl.cli:main"
+
 
 
 # =============================================================================
