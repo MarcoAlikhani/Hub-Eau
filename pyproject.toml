@@ -32,6 +32,7 @@ dev = [
     "freezegun>=1.5.5",
     "mypy>=2.3.0",
     "pandas-stubs>=3.0.5.260730",
+    "poethepoet>=0.48.0",
     "pytest>=9.1.1",
     "pytest-cov>=7.1.0",
     "responses>=0.26.2",
@@ -75,9 +76,7 @@ select = [
     "PD",   # pandas-vet — pandas-specific anti-patterns
     "RUF",  # ruff's own rules
 ]
-ignore = [
-    "PD901",  # allows the name `df` — it's the universal convention here
-]
+ignore = []
 
 # Tests get a looser ruleset: assert-heavy, argument-heavy fixtures are normal
 [tool.ruff.lint.per-file-ignores]
@@ -137,7 +136,11 @@ fmt-check  = "ruff format --check ."          # Verify formatting; CI uses this
 typecheck = "mypy"                            # Static type check src/
 test      = "pytest"                          # Run the suite with coverage
 run       = "flood-etl"                       # Invoke the pipeline entry point
+fix        = ["_ruff-fix", "format"]
+_ruff-fix = "ruff check --fix ."
+
 
 # The gate. Runs everything CI runs, in the same order, locally.
 # Catch failures on your machine in 10 seconds, not on a PR in 3 minutes.
 check = ["lint", "fmt-check", "typecheck", "test"]
+
