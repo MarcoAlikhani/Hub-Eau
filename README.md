@@ -1,6 +1,6 @@
 # Hub'Eau
 
-## 1. What This Project Is
+## 1. What This Project Is Abouts
 
 A scheduled, unattended ETL pipeline that ingests daily water-level observations
 from **Hub'Eau** (France's official open water-data API), cleans and standardises
