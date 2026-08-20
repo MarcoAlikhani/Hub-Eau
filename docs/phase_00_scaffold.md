@@ -1,6 +1,6 @@
 # 🧱 Phase 0 — Scaffold & Tooling
 
-**Project:** `flood-etl` · **Status:** ✅ Complete · **Python:** 3.12.13
+**Project:** `flood-etl`
 
 ---
 
